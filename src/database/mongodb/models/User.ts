@@ -17,6 +17,7 @@ const PointSchema = new mongoose.Schema({
 const Schema = new mongoose.Schema({
     github: { type: String, required: true, lowercase: true },
     password: { type: String, required: true },
+    email: { type: String, required: true, lowercase: true },
     personal: {
         name: {
             first: { type: String, required: true },
@@ -27,11 +28,6 @@ const Schema = new mongoose.Schema({
             city: { type: String, required: true },
             country: { type: String, required: true },
             location: { type: PointSchema, index: '2dsphere', required: true }
-        },
-        contact: {
-            email: { type: String, required: true },
-            linkedin: { type: String },
-            website: { type: String }
         }
     }
 })
@@ -46,6 +42,7 @@ interface IPointSchema {
 interface IUser {
     github: string
     password: string
+    email: string
     personal: {
         name: {
             first: string
@@ -56,11 +53,6 @@ interface IUser {
             city: string
             country: string
             location: IPointSchema
-        }
-        contact: {
-            email: string
-            linkedin?: string
-            website?: string
         }
     }
 }

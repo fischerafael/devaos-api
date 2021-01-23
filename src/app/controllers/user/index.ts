@@ -1,28 +1,45 @@
 import { Request, Response } from 'express'
+import User from '../../../database/mongodb/models/User'
+import { formatResponse } from '../../helpers'
 
 export const userController = {
-    create(req: Request, res: Response) {
+    async create(req: Request, res: Response) {
         const { body } = req
         try {
-            const { status, data } = userService.create(body)
+            const { status, data } = await userService.create(body)
             res.status(status).json(data)
         } catch (err) {
             res.status(500).json(err)
         }
     },
-    index(req: Request, res: Response) {
+    async index(req: Request, res: Response) {
         res.send('lista usuários')
     },
-    show(req: Request, res: Response) {
+    async show(req: Request, res: Response) {
         res.send('lista usuário específico')
     }
 }
 
 export const userService = {
-    create(body: object) {
-        return {
-            status: 200,
-            data: 'ok'
-        }
+    async create(request: ICreateUserBodyRequest) {
+        // validate data
+        // create data object
+        // interact with database
+        // return
+        const user = await User.create()
+        return formatResponse(200, 'ok')
     }
+}
+
+interface ICreateUserBodyRequest {
+    github: string
+    password: string
+    email: string
+    firstName: string
+    lastName: string
+    birthYear: number
+    city: string
+    country: string
+    latitude: number
+    longitude: number
 }
