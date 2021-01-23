@@ -1,5 +1,5 @@
 import { database } from '../database'
-import { config } from './middleware/config'
+import { config } from './middlewares/config'
 
 import express from 'express'
 
