@@ -3,6 +3,7 @@ import User from '../../../database/mongodb/models/User'
 import { formatData } from '../helpers/format-data'
 import { processData } from '../helpers/process-data'
 import { formatResponse } from '../../../app/helpers'
+import { getGitHub } from '../helpers/get-github'
 
 export const userService = {
     async create(request: ICreateUserBodyRequest) {
@@ -34,6 +35,14 @@ export const userService = {
             latitude,
             longitude
         })
+        // business logic
+        const hasGitHub = await getGitHub(github)
+        if (!hasGitHub) return formatResponse(404, 'Github user does not exist')
+
+        const hasUser = await User.findOne({ email: userData.email })
+        if (hasUser)
+            return formatResponse(409, 'This email is already being used')
+
         // interact with database
         const createdUser = await User.create(userData)
         // format return
