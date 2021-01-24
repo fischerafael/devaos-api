@@ -1,7 +1,13 @@
-export function formatResponse(status: number, message: string, data?: object) {
+export function formatResponse(
+    status: number,
+    message: string,
+    response?: object
+) {
     return {
         status,
-        message,
-        data
+        data: {
+            message,
+            response
+        }
     }
 }
