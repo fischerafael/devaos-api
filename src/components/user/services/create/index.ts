@@ -5,7 +5,7 @@ import { getGitHub } from '../../helpers/get-github'
 import { processData } from '../../helpers/process-data'
 import { validateEmail } from '../../helpers/validate-email'
 
-export async function create(request: ICreateUserBodyRequest) {
+export async function createUserService(request: ICreateUserBodyRequest) {
     const {
         github,
         email,
