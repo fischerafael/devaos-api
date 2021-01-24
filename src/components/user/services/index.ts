@@ -4,6 +4,7 @@ import { formatData } from '../helpers/format-data'
 import { processData } from '../helpers/process-data'
 import { formatResponse } from '../../../app/helpers'
 import { getGitHub } from '../helpers/get-github'
+import { validateEmail } from '../helpers/validate-email'
 
 export const userService = {
     async create(request: ICreateUserBodyRequest) {
@@ -19,7 +20,11 @@ export const userService = {
             latitude,
             longitude
         } = request
+
         // validate data
+        const isEmailValid = validateEmail(email)
+        if (!isEmailValid) return formatResponse(400, 'Invalid email')
+
         // manipulate data
         const hashedPassword = await processData.hashPassword(password)
 
@@ -30,6 +35,7 @@ export const userService = {
         const hasUser = await User.findOne({ email })
         if (hasUser)
             return formatResponse(409, 'This email is already being used')
+
         // create user data object
         const userData = formatData.user({
             github,
@@ -43,6 +49,7 @@ export const userService = {
             latitude,
             longitude
         })
+
         // interact with database
         const createdUser = await User.create(userData)
         // format return
