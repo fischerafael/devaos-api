@@ -23,6 +23,14 @@ export const userService = {
         // manipulate data
         const hashedPassword = await processData.hashPassword(password)
 
+        // business logic
+        const hasGitHub = await getGitHub(github)
+        if (!hasGitHub) return formatResponse(404, 'Github user does not exist')
+
+        const hasUser = await User.findOne({ email })
+        if (hasUser)
+            return formatResponse(409, 'This email is already being used')
+        // create user data object
         const userData = formatData.user({
             github,
             email,
@@ -35,14 +43,6 @@ export const userService = {
             latitude,
             longitude
         })
-        // business logic
-        const hasGitHub = await getGitHub(github)
-        if (!hasGitHub) return formatResponse(404, 'Github user does not exist')
-
-        const hasUser = await User.findOne({ email: userData.email })
-        if (hasUser)
-            return formatResponse(409, 'This email is already being used')
-
         // interact with database
         const createdUser = await User.create(userData)
         // format return
