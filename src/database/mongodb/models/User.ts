@@ -33,26 +33,3 @@ const Schema = new mongoose.Schema({
 })
 
 export default mongoose.model<IUserModel>('User', Schema)
-
-interface IPointSchema {
-    type: string
-    coordinates: [number, number]
-}
-
-interface IUser {
-    github: string
-    password: string
-    email: string
-    personal: {
-        name: {
-            first: string
-            last: string
-            birthYear: number
-        }
-        address: {
-            city: string
-            country: string
-            location: IPointSchema
-        }
-    }
-}
